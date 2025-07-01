@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Solve Problem - Qodex</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .editor-box {
+            background: #1e1e1e;
+            color: #eee;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: monospace;
+            min-height: 300px;
+        }
+        .btn-run {
+            background-color: #28a745;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-dark bg-dark px-4">
+    <a class="navbar-brand" href="/">Qodex</a>
+    <div class="navbar-nav ms-auto">
+        <a class="nav-link text-white" href="/dashboard">Dashboard</a>
+        <a class="nav-link text-white" href="/logout">Logout</a>
+    </div>
+</nav>
+
+<div class="container mt-4">
+    <h3 th:text="${problem.title}">Problem Title</h3>
+    <p class="text-muted" th:text="${problem.difficulty}">Difficulty</p>
+    <p th:text="${problem.description}">Problem description here...</p>
+
+    <form action="/submit" method="post">
+        <label for="code">Your Solution:</label>
+        <textarea id="code" name="code" class="form-control editor-box mb-3" rows="12">// write your code here</textarea>
+        <input type="hidden" name="problemId" th:value="${problem.id}"/>
+        <button class="btn btn-run">Run & Submit</button>
+    </form>
+
+
+</div>
+
+</body>
+</html>

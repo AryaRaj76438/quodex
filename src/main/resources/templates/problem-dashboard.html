@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Qodex - Problem Dashboard</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <style>
+        body {
+            background-color: #f4f6f8;
+        }
+        .filter-panel {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        .table thead th {
+            background-color: #343a40;
+            color: white;
+        }
+        .status-badge {
+            font-size: 0.85rem;
+            padding: 4px 10px;
+            border-radius: 15px;
+        }
+        .badge-solved {
+            background-color: #28a745;
+            color: white;
+        }
+        .badge-unsolved {
+            background-color: #dc3545;
+            color: white;
+        }
+        .tag {
+            font-size: 0.75rem;
+            margin-right: 4px;
+            padding: 3px 8px;
+            background-color: #e2e3e5;
+            border-radius: 15px;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-dark bg-dark px-4">
+    <a class="navbar-brand" href="/">Qodex</a>
+    <div class="navbar-nav ms-auto">
+        <a class="nav-link text-white" href="/dashboard">Dashboard</a>
+        <a class="nav-link text-white" href="/logout">Logout</a>
+    </div>
+</nav>
+
+<div class="container mt-4">
+    <h2 class="mb-4">Problem Dashboard</h2>
+
+    <!-- Filters -->
+    <div class="filter-panel mb-4">
+        <form class="row g-3" method="get" action="/problems">
+            <div class="col-md-3">
+                <input type="text" name="search" class="form-control" placeholder="Search title..." th:value="${search}">
+            </div>
+            <div class="col-md-2">
+                <select name="difficulty" class="form-select">
+                    <option value="">All Difficulties</option>
+                    <option value="EASY">Easy</option>
+                    <option value="MEDIUM">Medium</option>
+                    <option value="HARD">Hard</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <input type="text" name="company" class="form-control" placeholder="Company (e.g. Amazon)">
+            </div>
+            <div class="col-md-2">
+                <select name="status" class="form-select">
+                    <option value="">All</option>
+                    <option value="SOLVED">Solved</option>
+                    <option value="UNSOLVED">Unsolved</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <button class="btn btn-primary w-100">Apply</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Table -->
+    <div class="table-responsive shadow-sm">
+        <table class="table table-bordered table-hover align-middle bg-white">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Difficulty</th>
+                <th>Tags</th>
+                <th>Company</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="problem : ${problems}">
+                <td th:text="${problem.id}">1</td>
+                <td>
+                    <a th:href="@{'/problems/' + ${problem.id}}" th:text="${problem.title}">Two Sum</a>
+                </td>
+                <td>
+                    <span th:text="${problem.difficulty}" class="badge bg-secondary"></span>
+                </td>
+                <td>
+                    <span th:each="tag : ${problem.tags}" th:text="${tag}" class="tag">Array</span>
+                </td>
+                <td th:text="${problem.company}">Google</td>
+                <td>
+                    <span th:if="${problem.solved}" class="status-badge badge-solved">Solved</span>
+                    <span th:if="${!problem.solved}" class="status-badge badge-unsolved">Unsolved</span>
+                </td>
+                <td>
+                    <a th:href="@{'/problems/' + ${problem.id}}" class="btn btn-outline-primary btn-sm">Solve</a>
+                </td>
+            </tr>
+            <tr th:if="${problems.isEmpty()}">
+                <td colspan="7" class="text-center">No problems found.</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+</body>
+</html>

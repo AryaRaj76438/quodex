@@ -14,5 +14,4 @@ public class QodexApplication {
 		System.setProperty("DB_PASS", dotenv.get("DB_PASS"));
 		SpringApplication.run(QodexApplication.class, args);
 	}
-
 }
